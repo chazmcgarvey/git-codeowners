@@ -1,0 +1,114 @@
+#! perl
+# ABSTRACT: A tool for managing CODEOWNERS files
+# PODNAME: git-codeowners
+
+=head1 SYNOPSIS
+
+    git-codeowners [--version|--help|--manual]
+
+    git-codeowners [show] [--format FORMAT] [--[no-]project] [PATH...]
+
+    git-codeowners owners [--format FORMAT] [--pattern PATTERN]
+
+    git-codeowners patterns [--format FORMAT] [--owner OWNER]
+
+    git-codeowners create|update [REPO_DIRPATH|CODEOWNERS_FILEPATH]
+
+    # enable bash shell completion
+    eval "$(git-codeowners --shell-completion)"
+
+=head1 DESCRIPTION
+
+F<git-codeowners> is yet another CLI tool for managing F<CODEOWNERS> files in
+git repos. In particular, it can be used to quickly find out who owns
+a particular file in a monorepo (or monolith).
+
+B<THIS IS EXPERIMENTAL!> The interface of this tool and its modules will
+probably change as I field test some things. Feedback welcome.
+
+=head1 OPTIONS
+
+=head2 --version
+
+Print the program name and version to C<STDOUT>, and exit.
+
+Alias: C<-v>
+
+=head2 --help
+
+Print the synopsis to C<STDOUT>, and exit.
+
+Alias: C<-h>
+
+You can also use C<--manual> to print the full documentation.
+
+=head2 --format
+
+Specify the output format to use. See L</FORMAT>.
+
+Alias: C<-f>
+
+=head2 --shell-completion
+
+    eval "$(lintany --shell-completion)"
+
+Print shell code to enable completion to C<STDOUT>, and exit.
+
+Does not yet support Zsh...
+
+=head1 COMMANDS
+
+=head2 show
+
+    git-codeowners [show] [--format FORMAT] [--[no-]project] [PATH...]
+
+Show owners of one or more files in a repo.
+
+=head2 owners
+
+    git-codeowners owners [--format FORMAT] [--pattern PATTERN]
+
+=head2 patterns
+
+    git-codeowners patterns [--format FORMAT] [--owner OWNER]
+
+=head2 create
+
+    git-codeowners create [REPO_DIRPATH|CODEOWNERS_FILEPATH]
+
+Create a new F<CODEOWNERS> file for a specified repo (or current directory).
+
+=head2 update
+
+    git-codeowners update [REPO_DIRPATH|CODEOWNERS_FILEPATH]
+
+Update the "unowned" list of an existing F<CODEOWNERS> file for a specified
+repo (or current directory).
+
+=head1 FORMAT
+
+The C<--format> argument can be one of:
+
+=for :list
+* C<csv> - Comma-separated values (requires L<Text::CSV>)
+* C<json:pretty> - Pretty JSON (requires L<JSON::MaybeXS>)
+* C<json> - JSON (requires L<JSON::MaybeXS>)
+* C<table> - Table (requires L<Text::Table>)
+* C<tsv> - Tab-separated values (requires L<Text::CSV>)
+* C<yaml> - YAML (requires L<YAML>)
+* C<FORMAT> - Custom format (see below)
+
+You can specify a custom format using printf-like format sequences.
+
+=cut
+
+# FATPACK - Do not remove this line.
+
+use warnings;
+use strict;
+
+use App::Codeowners;
+
+our $VERSION = '9999.999'; # VERSION
+
+App::Codeowners->main(@ARGV);
