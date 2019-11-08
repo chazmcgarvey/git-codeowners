@@ -275,7 +275,7 @@ sub _expand_filter_args {
 
     for (my $i = 0; $i < @filters; ++$i) {
         my $filter = $filters[$i] or next;
-        if ($filter =~ /^(?:nocolor|color:([0-9a-fA-F]{6}))$/) {
+        if ($filter =~ /^(?:nocolor|color:([0-9a-fA-F]{3,6}))$/) {
             $color_override = $1 || '';
             splice(@filters, $i, 1);
             redo;
@@ -291,6 +291,12 @@ sub _colored {
 
     # ansifg honors NO_COLOR already, but ansi_reset does not.
     return $text if $ENV{NO_COLOR};
+
+    $rgb =~ s/^(.)(.)(.)$/$1$1$2$2$3$3/;
+    if ($rgb !~ m/^[0-9a-fA-F]{6}$/) {
+        warn "Color value must be in 'ffffff' or 'fff' form.\n";
+        return $text;
+    }
 
     my ($begin, $end) = (ansifg($rgb), ansi_reset);
     return "${begin}${text}${end}";
