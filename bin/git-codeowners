@@ -104,12 +104,14 @@ The C<--format> argument can be one of:
 * C<csv> - Comma-separated values (requires L<Text::CSV>)
 * C<json:pretty> - Pretty JSON (requires L<JSON::MaybeXS>)
 * C<json> - JSON (requires L<JSON::MaybeXS>)
-* C<table> - Table (requires L<Text::Table>)
+* C<table> - Table (requires L<Text::Table::Any>)
 * C<tsv> - Tab-separated values (requires L<Text::CSV>)
 * C<yaml> - YAML (requires L<YAML>)
 * C<FORMAT> - Custom format (see below)
 
-You can specify a custom format using printf-like format sequences. These are the items that can
+=head2 Custom
+
+You can specify a custom format using printf-like format sequences. These are the items that can be
 substituted:
 
 =for :list
@@ -133,6 +135,16 @@ Available filters:
 * C<quote> - Quote the replacement string.
 * C<color:FFFFFF> - Colorize the replacement string (if color is ON).
 * C<nocolor> - Do not colorize replacement string.
+
+=head2 Table
+
+Table formatting can be done by one of several different modules, each with its own features and
+bugs. The default module is L<Text::Table::Tiny>, but this can be overridden using the
+C<PERL_TEXT_TABLE> environment variable if desired, like this:
+
+    PERL_TEXT_TABLE=Text::Table::HTML git-codeowners -f table
+
+The list of available modules is at L<Text::Table::Any/@BACKENDS>.
 
 =cut
 

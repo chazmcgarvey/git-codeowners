@@ -174,11 +174,14 @@ sub _format {
     my $rows    = $args{rows}    || [];
 
     if ($format eq 'table') {
-        eval { require Text::Table } or die "Missing dependency: Text::Table\n";
+        eval { require Text::Table::Any } or die "Missing dependency: Text::Table::Any\n";
 
-        my $table = Text::Table->new(@$headers);
-        $table->load(map { [map { _stringify($_) } @$_] } @$rows);
-        print { $fh } encode('UTF-8', "$table");
+        my $table = Text::Table::Any::table(
+            header_row  => 1,
+            rows        => [$headers, map { [map { _stringify($_) } @$_] } @$rows],
+            backend     => $ENV{PERL_TEXT_TABLE},
+        );
+        print { $fh } encode('UTF-8', $table);
     }
     elsif ($format =~ /^json(:pretty)?$/) {
         my $pretty = !!$1;
