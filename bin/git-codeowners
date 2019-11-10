@@ -19,12 +19,35 @@
 
 =head1 DESCRIPTION
 
-F<git-codeowners> is yet another CLI tool for managing F<CODEOWNERS> files in
-git repos. In particular, it can be used to quickly find out who owns
-a particular file in a monorepo (or monolith).
+F<git-codeowners> is yet another CLI tool for managing F<CODEOWNERS> files in git repos. In
+particular, it can be used to quickly find out who owns a particular file in a monorepo (or
+monolith).
 
-B<THIS IS EXPERIMENTAL!> The interface of this tool and its modules will
-probably change as I field test some things. Feedback welcome.
+B<THIS IS EXPERIMENTAL!> The interface of this tool and its modules will probably change as I field
+test some things. Feedback welcome.
+
+=head1 INSTALL
+
+There are several ways to install F<git-codeowners> to your system.
+
+=head2 from CPAN
+
+You can install F<git-codeowners> using L<cpanm>:
+
+    cpanm App::Codeowners
+
+=head2 from GitHub
+
+You can also choose to download F<git-codeowners> as a self-contained executable:
+
+    curl -OL https://raw.githubusercontent.com/chazmcgarvey/git-codeowners/solo/git-codeowners
+    chmod +x git-codeowners
+
+To hack on the code, clone the repo instead:
+
+    git clone https://github.com/chazmcgarvey/git-codeowners.git
+    cd git-codeowners
+    make bootstrap      # installs dependencies; requires cpanm
 
 =head1 OPTIONS
 

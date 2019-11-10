@@ -4,4 +4,6 @@
 /.perl-version
 /App-Codeowners-*
 /cover_db
+/fatlib
+/git-codeowners
 /local

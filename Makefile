@@ -31,7 +31,7 @@ dist:
 	$(DZIL) build
 
 distclean: clean
-	rm -rf cover_db
+	rm -rf .build cover_db fatlib git-codeowners
 
 run:
 	$(PERL) -Ilib bin/git-codeowners $(GIT_CODEOWNERS_FLAGS)
