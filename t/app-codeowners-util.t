@@ -72,7 +72,8 @@ exit;
 
 sub _can_git {
     my ($version) = run_git('--version');
-    return $version;
+    note "Found: $version" if $version;
+    return $version && $version ge 'git version 1.8.5';     # for -C flag
 }
 
 sub _setup_git_repo {

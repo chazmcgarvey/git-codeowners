@@ -169,6 +169,11 @@ C<PERL_TEXT_TABLE> environment variable if desired, like this:
 
 The list of available modules is at L<Text::Table::Any/@BACKENDS>.
 
+=head1 CAVEATS
+
+=for :list
+* Some commands require F<git> (at least version 1.8.5).
+
 =cut
 
 # FATPACK - Do not remove this line.
