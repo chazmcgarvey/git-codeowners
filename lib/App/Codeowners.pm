@@ -8,7 +8,7 @@ use strict;
 
 use App::Codeowners::Options;
 use App::Codeowners::Util qw(find_codeowners_in_directory run_git git_ls_files git_toplevel stringf);
-use Color::ANSI::Util qw(ansifg ansi_reset);
+use Color::ANSI::Util 0.03 qw(ansifg);
 use Encode qw(encode);
 use File::Codeowners;
 use Path::Tiny;
@@ -288,11 +288,12 @@ sub _expand_filter_args {
     return (\@filters, $color_override);
 }
 
+sub _ansi_reset { "\033[0m" }
+
 sub _colored {
     my $text = shift;
     my $rgb  = shift or return $text;
 
-    # ansifg honors NO_COLOR already, but ansi_reset does not.
     return $text if $ENV{NO_COLOR};
 
     $rgb =~ s/^(.)(.)(.)$/$1$1$2$2$3$3/;
@@ -301,7 +302,7 @@ sub _colored {
         return $text;
     }
 
-    my ($begin, $end) = (ansifg($rgb), ansi_reset);
+    my ($begin, $end) = (ansifg($rgb), _ansi_reset);
     return "${begin}${text}${end}";
 }
 
