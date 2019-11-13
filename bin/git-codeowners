@@ -132,7 +132,7 @@ The C<--format> argument can be one of:
 * C<yaml> - YAML (requires L<YAML>)
 * C<FORMAT> - Custom format (see below)
 
-=head2 Custom
+=head2 Format string
 
 You can specify a custom format using printf-like format sequences. These are the items that can be
 substituted:
@@ -159,7 +159,7 @@ Available filters:
 * C<color:FFFFFF> - Colorize the replacement string (if color is ON).
 * C<nocolor> - Do not colorize replacement string.
 
-=head2 Table
+=head2 Format table
 
 Table formatting can be done by one of several different modules, each with its own features and
 bugs. The default module is L<Text::Table::Tiny>, but this can be overridden using the
