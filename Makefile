@@ -39,5 +39,5 @@ run:
 test:
 	$(PROVE) -l$(if $(findstring 1,$(V)),v) t
 
-.PHONY: all bootstrap clean cover debug dist distclean run test
+.PHONY: all bootstrap check clean cover debug dist distclean run test
 
