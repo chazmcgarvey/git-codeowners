@@ -76,7 +76,8 @@ done_testing;
 exit;
 
 sub _can_git {
-    my (undef, $version) = run_git('--version');
+    my (undef, $version) = eval { run_git('--version') };
+    note $@ if $@;
     note "Found: $version" if $version;
     return $version && $version ge 'git version 1.8.5';     # for -C flag
 }

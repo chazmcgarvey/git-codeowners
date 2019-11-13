@@ -51,7 +51,9 @@ subtest 'git_toplevel' => sub {
 };
 
 subtest 'find_nearest_codeowners' => sub {
+    plan skip_all => 'Cannot run git' if !$can_git;
     my $repodir =_setup_git_repo();
+
     $repodir->child('docs')->mkpath;
     my $filepath = _spew_codeowners($repodir->child('docs/CODEOWNERS'));
 
@@ -60,9 +62,10 @@ subtest 'find_nearest_codeowners' => sub {
 };
 
 subtest 'find_codeowners_in_directory' => sub {
+    plan skip_all => 'Cannot run git' if !$can_git;
     my $repodir =_setup_git_repo();
-    $repodir->child('docs')->mkpath;
 
+    $repodir->child('docs')->mkpath;
     my $filepath = _spew_codeowners($repodir->child('docs/CODEOWNERS'));
 
     my $r = App::Codeowners::Util::find_codeowners_in_directory($repodir);
@@ -77,7 +80,8 @@ done_testing;
 exit;
 
 sub _can_git {
-    my (undef, $version) = run_git('--version');
+    my (undef, $version) = eval { run_git('--version') };
+    note $@ if $@;
     note "Found: $version" if $version;
     return $version && $version ge 'git version 1.8.5';     # for -C flag
 }
