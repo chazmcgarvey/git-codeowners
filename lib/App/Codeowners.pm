@@ -54,19 +54,46 @@ sub _command_show {
     my ($proc, $cdup) = run_git(qw{rev-parse --show-cdup});
     $proc->wait and exit 1;
 
+    my $show_projects = $opts->{projects} // scalar @{$codeowners->projects};
+
     my $formatter = App::Codeowners::Formatter->new(
         format  => $opts->{format} || ' * %-50F %O',
         handle  => *STDOUT,
-        columns => [qw(File Owner), $opts->{project} ? 'Project' : ()],
+        columns => [
+            'File',
+            $opts->{patterns} ? 'Pattern' : (),
+            'Owner',
+            $show_projects ? 'Project' : (),
+        ],
     );
+
+    my %filter_owners   = map { $_ => 1 } @{$opts->{owner}};
+    my %filter_projects = map { $_ => 1 } @{$opts->{project}};
+    my %filter_patterns = map { $_ => 1 } @{$opts->{pattern}};
 
     $proc = git_ls_files('.', $opts->args);
     while (my $filepath = $proc->next) {
         my $match = $codeowners->match(path($filepath)->relative($cdup));
+        if (%filter_owners) {
+            for my $owner (@{$match->{owners}}) {
+                goto ADD_RESULT if $filter_owners{$owner};
+            }
+            next;
+        }
+        if (%filter_patterns) {
+            goto ADD_RESULT if $filter_patterns{$match->{pattern} || ''};
+            next;
+        }
+        if (%filter_projects) {
+            goto ADD_RESULT if $filter_projects{$match->{project} || ''};
+            next;
+        }
+        ADD_RESULT:
         $formatter->add_result([
             $filepath,
+            $opts->{patterns} ? $match->{pattern} : (),
             $match->{owners},
-            $opts->{project} ? $match->{project} : (),
+            $show_projects ? $match->{project} : (),
         ]);
     }
     $proc->wait and exit 1;
@@ -108,6 +135,26 @@ sub _command_patterns {
         format  => $opts->{format} || '%T',
         handle  => *STDOUT,
         columns => [qw(Pattern)],
+    );
+    $formatter->add_result(map { [$_] } @$results);
+}
+
+sub _command_projects {
+    my $self = shift;
+    my $opts = shift;
+
+    my $toplevel = git_toplevel('.') or die "Not a git repo\n";
+
+    my $codeowners_path = find_codeowners_in_directory($toplevel)
+        or die "No CODEOWNERS file in $toplevel\n";
+    my $codeowners = File::Codeowners->parse_from_filepath($codeowners_path);
+
+    my $results = $codeowners->projects;
+
+    my $formatter = App::Codeowners::Formatter->new(
+        format  => $opts->{format} || '%P',
+        handle  => *STDOUT,
+        columns => [qw(Project)],
     );
     $formatter->add_result(map { [$_] } @$results);
 }

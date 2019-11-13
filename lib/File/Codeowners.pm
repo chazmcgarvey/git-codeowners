@@ -355,6 +355,31 @@ sub patterns {
     return $patterns;
 }
 
+=method projects
+
+    $projects = $codeowners->projects;
+
+Get an arrayref of all projects defined.
+
+=cut
+
+sub projects {
+    my $self  = shift;
+
+    return $self->{projects} if $self->{projects};
+
+    my %projects;
+    for my $line (@{$self->_lines}) {
+        my $project = $line->{project};
+        $projects{$project}++ if $project;
+    }
+
+    my $projects = [sort keys %projects];
+    $self->{projects} = $projects;
+
+    return $projects;
+}
+
 =method update_owners
 
     $codeowners->update_owners($pattern => \@new_owners);
@@ -497,6 +522,7 @@ sub _clear {
     delete $self->{match_lines};
     delete $self->{owners};
     delete $self->{patterns};
+    delete $self->{projects};
 }
 
 1;

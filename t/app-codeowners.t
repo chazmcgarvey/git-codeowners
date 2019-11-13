@@ -65,7 +65,7 @@ END
     subtest 'format json' => sub {
         plan skip_all => 'No JSON::MaybeXS' if !eval { require JSON::MaybeXS };
 
-        ($stdout, $stderr, $exit) = run { App::Codeowners->main(qw{-f json show --no-project}) };
+        ($stdout, $stderr, $exit) = run { App::Codeowners->main(qw{-f json show --no-projects}) };
         is($exit, 0, 'exited without error');
         my $expect = '[{"File":"CODEOWNERS","Owner":null},{"File":"a/b/c/bar.txt","Owner":["@snickers"]},{"File":"foo.txt","Owner":["@twix"]}]';
         is($stdout, $expect, 'correct output with json format');

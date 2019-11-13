@@ -30,8 +30,13 @@ sub command_options {
         'patterns'  => {
             'owner=s'   => '',
         },
+        'projects'  => {},
         'show'      => {
-            'project!'  => 1,
+            'owner=s@'      => [],
+            'pattern=s@'    => [],
+            'project=s@'    => [],
+            'patterns!'     => 0,
+            'projects!'     => undef,
         },
         'update'    => {},
     };

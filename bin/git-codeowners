@@ -6,7 +6,9 @@
 
     git-codeowners [--version|--help|--manual]
 
-    git-codeowners [show] [--format FORMAT] [--[no-]project] [PATH...]
+    git-codeowners [show] [--format FORMAT] [--owner OWNER]...
+                   [--pattern PATTERN]... [--[no-]patterns]
+                   [--project PROJECT]... [--[no-]projects] [PATH...]
 
     git-codeowners owners [--format FORMAT] [--pattern PATTERN]
 
@@ -94,17 +96,32 @@ Does not yet support Zsh...
 
 =head2 show
 
-    git-codeowners [show] [--format FORMAT] [--[no-]project] [PATH...]
+    git-codeowners [show] [--format FORMAT] [--owner OWNER]...
+                   [--pattern PATTERN]... [--[no-]patterns]
+                   [--project PROJECT]... [--[no-]projects] [PATH...]
 
 Show owners of one or more files in a repo.
+
+If C<--owner>, C<--project>, C<--pattern> are set, only show files with matching
+criteria. These can be repeated.
+
+Use C<--patterns> to also show the matching pattern associated with each file.
+
+By default the output might show associated projects if the C<CODEOWNERS> file
+defines them. You can control this by explicitly using C<--projects> or
+C<--no-projects> to always show or always hide defined projects, respectively.
 
 =head2 owners
 
     git-codeowners owners [--format FORMAT] [--pattern PATTERN]
 
+List all owners defined in the F<CODEOWNERS> file.
+
 =head2 patterns
 
     git-codeowners patterns [--format FORMAT] [--owner OWNER]
+
+List all patterns defined in the F<CODEOWNERS> file.
 
 =head2 create
 
