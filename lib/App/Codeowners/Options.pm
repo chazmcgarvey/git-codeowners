@@ -8,7 +8,7 @@ use Getopt::Long 2.39 ();
 use Path::Tiny;
 use Pod::Usage;
 
-our $VERSION = '0.42'; # VERSION
+our $VERSION = '0.43'; # VERSION
 
 sub early_options {
     return {
@@ -278,7 +278,7 @@ App::Codeowners::Options - Getopt and shell completion for App::Codeowners
 
 =head1 VERSION
 
-version 0.42
+version 0.43
 
 =head1 METHODS
 

@@ -5,7 +5,7 @@ package App::Codeowners::Formatter::YAML;
 use warnings;
 use strict;
 
-our $VERSION = '0.42'; # VERSION
+our $VERSION = '0.43'; # VERSION
 
 use parent 'App::Codeowners::Formatter';
 
@@ -36,7 +36,7 @@ App::Codeowners::Formatter::YAML - Format codeowners output as YAML
 
 =head1 VERSION
 
-version 0.42
+version 0.43
 
 =head1 DESCRIPTION
 

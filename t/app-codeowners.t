@@ -72,6 +72,25 @@ END
     };
 };
 
+subtest 'create' => sub {
+    plan skip_all => 'Cannot run git' if !$can_git;
+
+    my $repodir = _setup_git_repo();
+    my $chdir   = pushd($repodir);
+
+    my $codeowners_filepath = path('CODEOWNERS');
+    $codeowners_filepath->remove;
+
+    my ($stdout, $stderr, $exit) = run { App::Codeowners->main(qw{create}) };
+    is($exit, 0, 'exited without error');
+    is($stderr, "Wrote CODEOWNERS\n", 'reportedly wrote a CODEOWNERS file');
+
+    ok($codeowners_filepath->is_file, 'did write CODEOWNERS file');
+
+    my $contents = $codeowners_filepath->slurp_utf8;
+    like($contents, qr/^# This file shows mappings/, 'correct contents of file') or diag $contents;
+};
+
 done_testing;
 exit;
 

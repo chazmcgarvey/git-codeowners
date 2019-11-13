@@ -5,7 +5,7 @@ package App::Codeowners::Formatter;
 use warnings;
 use strict;
 
-our $VERSION = '0.42'; # VERSION
+our $VERSION = '0.43'; # VERSION
 
 use Module::Load;
 
@@ -120,7 +120,7 @@ App::Codeowners::Formatter - Base class for formatting codeowners output
 
 =head1 VERSION
 
-version 0.42
+version 0.43
 
 =head1 SYNOPSIS
 

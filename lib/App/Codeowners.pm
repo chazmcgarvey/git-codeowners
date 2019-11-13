@@ -14,7 +14,7 @@ use Encode qw(encode);
 use File::Codeowners;
 use Path::Tiny;
 
-our $VERSION = '0.42'; # VERSION
+our $VERSION = '0.43'; # VERSION
 
 
 sub main {
@@ -194,11 +194,10 @@ END
 
     if ($repopath) {
         # if there is a repo we can try to update the list of unowned files
-        my $git_files = git_ls_files($repopath);
-        if (@$git_files) {
-            $codeowners->clear_unowned;
-            $codeowners->add_unowned(grep { !$codeowners->match($_) } @$git_files);
-        }
+        my ($proc, @filepaths) = git_ls_files($repopath);
+        $proc->wait and exit 1;
+        $codeowners->clear_unowned;
+        $codeowners->add_unowned(grep { !$codeowners->match($_) } @filepaths);
     }
 
     $codeowners->write_to_filepath($path);
@@ -219,7 +218,7 @@ App::Codeowners - A tool for managing CODEOWNERS files
 
 =head1 VERSION
 
-version 0.42
+version 0.43
 
 =head1 METHODS
 
