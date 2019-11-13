@@ -201,11 +201,10 @@ END
 
     if ($repopath) {
         # if there is a repo we can try to update the list of unowned files
-        my $git_files = git_ls_files($repopath);
-        if (@$git_files) {
-            $codeowners->clear_unowned;
-            $codeowners->add_unowned(grep { !$codeowners->match($_) } @$git_files);
-        }
+        my ($proc, @filepaths) = git_ls_files($repopath);
+        $proc->wait and exit 1;
+        $codeowners->clear_unowned;
+        $codeowners->add_unowned(grep { !$codeowners->match($_) } @filepaths);
     }
 
     $codeowners->write_to_filepath($path);
