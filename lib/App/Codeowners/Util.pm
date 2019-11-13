@@ -89,6 +89,8 @@ sub run_command {
     my $filter;
     $filter = pop if ref($_[-1]) eq 'CODE';
 
+    print STDERR "# @_\n" if $ENV{GIT_CODEOWNERS_DEBUG};
+
     my ($child_in, $child_out);
     require IPC::Open2;
     my $pid = IPC::Open2::open2($child_out, $child_in, @_);
@@ -283,6 +285,7 @@ sub unbackslash {
         }
         waitpid($pid, 0);
         my $status = $?;
+        print STDERR "# -> status $status\n" if $ENV{GIT_CODEOWNERS_DEBUG};
         delete $self->{pid};
         return $status;
     }
