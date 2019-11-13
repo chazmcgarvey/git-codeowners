@@ -78,11 +78,11 @@ sub codeowners_git_files_ok {
             return;
         }
 
-        my $files = git_ls_files(git_toplevel());
+        my ($proc, @files) = git_ls_files(git_toplevel());
 
-        $Test->plan(@$files ? (tests => scalar @$files) : (skip_all => 'git ls-files failed'));
+        $Test->plan($proc->wait == 0 ? (tests => scalar @files) : (skip_all => 'git ls-files failed'));
 
-        for my $filepath (@$files) {
+        for my $filepath (@files) {
             my $msg = encode('UTF-8', "Check file: $filepath");
 
             my $match = $codeowners->match($filepath);

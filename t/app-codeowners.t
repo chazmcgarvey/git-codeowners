@@ -76,7 +76,7 @@ done_testing;
 exit;
 
 sub _can_git {
-    my ($version) = run_git('--version');
+    my (undef, $version) = run_git('--version');
     note "Found: $version" if $version;
     return $version && $version ge 'git version 1.8.5';     # for -C flag
 }
@@ -93,9 +93,9 @@ sub _setup_git_repo {
 a/  @snickers
 END
 
-    run_git('-C', $repodir, qw{init});
-    run_git('-C', $repodir, qw{add .});
-    run_git('-C', $repodir, qw{commit -m}, 'initial commit');
+    run_git('-C', $repodir, qw{init})->wait;
+    run_git('-C', $repodir, qw{add .})->wait;
+    run_git('-C', $repodir, qw{commit -m}, 'initial commit')->wait;
 
     return $repodir;
 }
