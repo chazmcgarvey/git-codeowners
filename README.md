@@ -4,13 +4,15 @@ git-codeowners - A tool for managing CODEOWNERS files
 
 # VERSION
 
-version 0.41
+version 0.42
 
 # SYNOPSIS
 
     git-codeowners [--version|--help|--manual]
 
-    git-codeowners [show] [--format FORMAT] [--[no-]project] [PATH...]
+    git-codeowners [show] [--format FORMAT] [--owner OWNER]...
+                   [--pattern PATTERN]... [--[no-]patterns]
+                   [--project PROJECT]... [--[no-]projects] [PATH...]
 
     git-codeowners owners [--format FORMAT] [--pattern PATTERN]
 
@@ -97,17 +99,32 @@ Does not yet support Zsh...
 
 ## show
 
-    git-codeowners [show] [--format FORMAT] [--[no-]project] [PATH...]
+    git-codeowners [show] [--format FORMAT] [--owner OWNER]...
+                   [--pattern PATTERN]... [--[no-]patterns]
+                   [--project PROJECT]... [--[no-]projects] [PATH...]
 
 Show owners of one or more files in a repo.
+
+If `--owner`, `--project`, `--pattern` are set, only show files with matching
+criteria. These can be repeated.
+
+Use `--patterns` to also show the matching pattern associated with each file.
+
+By default the output might show associated projects if the `CODEOWNERS` file
+defines them. You can control this by explicitly using `--projects` or
+`--no-projects` to always show or always hide defined projects, respectively.
 
 ## owners
 
     git-codeowners owners [--format FORMAT] [--pattern PATTERN]
 
+List all owners defined in the `CODEOWNERS` file.
+
 ## patterns
 
     git-codeowners patterns [--format FORMAT] [--owner OWNER]
+
+List all patterns defined in the `CODEOWNERS` file.
 
 ## create
 
@@ -134,7 +151,7 @@ The `--format` argument can be one of:
 - `yaml` - YAML (requires [YAML](https://metacpan.org/pod/YAML))
 - `FORMAT` - Custom format (see below)
 
-## Custom
+## Format string
 
 You can specify a custom format using printf-like format sequences. These are the items that can be
 substituted:
@@ -159,7 +176,7 @@ Available filters:
 - `color:FFFFFF` - Colorize the replacement string (if color is ON).
 - `nocolor` - Do not colorize replacement string.
 
-## Table
+## Format table
 
 Table formatting can be done by one of several different modules, each with its own features and
 bugs. The default module is [Text::Table::Tiny](https://metacpan.org/pod/Text%3A%3ATable%3A%3ATiny), but this can be overridden using the
@@ -168,6 +185,10 @@ bugs. The default module is [Text::Table::Tiny](https://metacpan.org/pod/Text%3A
     PERL_TEXT_TABLE=Text::Table::HTML git-codeowners -f table
 
 The list of available modules is at ["@BACKENDS" in Text::Table::Any](https://metacpan.org/pod/Text%3A%3ATable%3A%3AAny#BACKENDS).
+
+# CAVEATS
+
+- Some commands require `git` (at least version 1.8.5).
 
 # BUGS
 
