@@ -84,7 +84,7 @@ sub new {
         exit 0;
     }
     if ($opts->{help}) {
-        pod2usage(-exitval => 0, -verbose => 99, -sections => [qw(NAME SYNOPSIS OPTIONS)]);
+        pod2usage(-exitval => 0, -verbose => 99, -sections => [qw(NAME SYNOPSIS OPTIONS COMMANDS)]);
     }
     if ($opts->{manual}) {
         pod2usage(-exitval => 0, -verbose => 2);
