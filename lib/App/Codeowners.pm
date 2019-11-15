@@ -212,3 +212,12 @@ END
 }
 
 1;
+__END__
+
+=head1 DESCRIPTION
+
+This is the implementation of the F<git-codeowners> command.
+
+See L<git-codeowners> for documentation.
+
+=cut
