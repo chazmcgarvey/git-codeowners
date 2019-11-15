@@ -89,7 +89,7 @@ Alias: `-f`
 
 ## --shell-completion
 
-    eval "$(lintany --shell-completion)"
+    eval "$(git-codeowners --shell-completion)"
 
 Print shell code to enable completion to `STDOUT`, and exit.
 

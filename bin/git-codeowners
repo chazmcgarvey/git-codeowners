@@ -86,7 +86,7 @@ Alias: C<-f>
 
 =head2 --shell-completion
 
-    eval "$(lintany --shell-completion)"
+    eval "$(git-codeowners --shell-completion)"
 
 Print shell code to enable completion to C<STDOUT>, and exit.
 
