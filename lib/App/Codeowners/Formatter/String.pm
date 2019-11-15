@@ -61,7 +61,7 @@ sub _colored {
     my $text = shift;
     my $rgb  = shift or return $text;
 
-    return $text if $ENV{NO_COLOR};
+    return $text if $ENV{NO_COLOR} || (defined $ENV{COLOR_DEPTH} && !$ENV{COLOR_DEPTH});
 
     $rgb =~ s/^(.)(.)(.)$/$1$1$2$2$3$3/;
     if ($rgb !~ m/^[0-9a-fA-F]{6}$/) {
