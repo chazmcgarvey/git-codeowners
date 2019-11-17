@@ -14,7 +14,7 @@ use Encode qw(encode);
 use File::Codeowners;
 use Path::Tiny;
 
-our $VERSION = '0.45'; # VERSION
+our $VERSION = '0.46'; # VERSION
 
 
 sub main {
@@ -218,7 +218,13 @@ App::Codeowners - A tool for managing CODEOWNERS files
 
 =head1 VERSION
 
-version 0.45
+version 0.46
+
+=head1 DESCRIPTION
+
+This is the implementation of the F<git-codeowners> command.
+
+See L<git-codeowners> for documentation.
 
 =head1 METHODS
 
