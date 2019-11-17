@@ -90,6 +90,8 @@ sub _setup_git_repo {
     my $repodir = tempdir;
 
     run_git('-C', $repodir, 'init')->wait;
+    run_git('-C', $repodir, qw{config --local user.email app-codeowners@example.com})->wait;
+    run_git('-C', $repodir, qw{config --local user.name App-Codeowners})->wait;
 
     $repodir->child('foo.txt')->touchpath;
     $repodir->child('a/b/c/bar.txt')->touchpath;
