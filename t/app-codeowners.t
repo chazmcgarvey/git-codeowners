@@ -9,7 +9,7 @@ use App::Codeowners::Util qw(run_git);
 use App::Codeowners;
 use Capture::Tiny qw(capture);
 use File::pushd;
-use Path::Tiny qw(path tempdir);
+use Path::Tiny 0.089 qw(path tempdir);
 use Test::More;
 
 my $can_git = _can_git();

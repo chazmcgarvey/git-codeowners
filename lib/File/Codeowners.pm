@@ -6,7 +6,7 @@ use warnings;
 use strict;
 
 use Encode qw(encode);
-use Path::Tiny;
+use Path::Tiny 0.089;
 use Scalar::Util qw(openhandle);
 use Text::Gitignore qw(build_gitignore_matcher);
 

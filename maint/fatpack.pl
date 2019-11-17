@@ -21,7 +21,7 @@ use File::pushd;
 use Getopt::Long;
 use MetaCPAN::API;
 use Module::CoreList;
-use Path::Tiny;
+use Path::Tiny 0.089;
 
 my $core_version        = '5.010001';
 my $plenv_version       = '5.10.1';
