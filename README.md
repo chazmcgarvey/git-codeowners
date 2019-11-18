@@ -4,7 +4,7 @@ git-codeowners - A tool for managing CODEOWNERS files
 
 # VERSION
 
-version 0.46
+version 0.47
 
 # SYNOPSIS
 

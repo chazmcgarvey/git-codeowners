@@ -2,6 +2,10 @@ Revision history for App-Codeowners.
 
 {{$NEXT}}
 
+0.47      2019-11-17 17:36:49-07:00 MST7MDT
+  * Configure git in unit tests to avoid unnecessary test failures.
+  * Compare long paths on win32 (thanks CPAN testers).
+
 0.46      2019-11-16 22:58:17-07:00 MST7MDT
   * Declare dependency on Path::Tiny 0.089 (thanks CPAN testers).
 
