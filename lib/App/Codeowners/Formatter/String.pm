@@ -5,7 +5,7 @@ package App::Codeowners::Formatter::String;
 use warnings;
 use strict;
 
-our $VERSION = '0.46'; # VERSION
+our $VERSION = '0.47'; # VERSION
 
 use parent 'App::Codeowners::Formatter';
 
@@ -136,7 +136,7 @@ App::Codeowners::Formatter::String - Format codeowners output using printf-like 
 
 =head1 VERSION
 
-version 0.46
+version 0.47
 
 =head1 DESCRIPTION
 
