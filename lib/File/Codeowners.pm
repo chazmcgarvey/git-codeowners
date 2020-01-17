@@ -98,11 +98,13 @@ sub parse_from_fh {
         }
         elsif ($line =~ /^\h*#(.*)/) {
             my $comment = $1;
+            my $project;
             if ($comment =~ /^\h*Project:\h*(.+?)\h*$/i) {
-                $current_project = $1 || undef;
+                $project = $current_project = $1 || undef;
             }
             $lines[$lineno] = {
                 comment => $comment,
+                $project ? (project => $project) : (),
             };
         }
         elsif ($line =~ /^\h*$/) {
@@ -401,11 +403,78 @@ sub update_owners {
 
     $self->_clear;
 
+    my $count = 0;
+
     for my $line (@{$self->_lines}) {
         next if !$line->{pattern};
         next if $pattern ne $line->{pattern};
         $line->{owners} = [@$owners];
+        ++$count;
     }
+
+    return $count;
+}
+
+=method update_owners_by_project
+
+    $codeowners->update_owners_by_project($project => \@new_owners);
+
+Set a new set of owners for all patterns under the given project.
+
+Nothing happens if the file does not have a project with the given name.
+
+=cut
+
+sub update_owners_by_project {
+    my $self    = shift;
+    my $project = shift;
+    my $owners  = shift;
+    $project && $owners or _usage(q{$codeowners->update_owners_by_project($project => \@owners)});
+
+    $owners = [$owners] if ref($owners) ne 'ARRAY';
+
+    $self->_clear;
+
+    my $count = 0;
+
+    for my $line (@{$self->_lines}) {
+        next if !$line->{project} || !$line->{owners};
+        next if $project ne $line->{project};
+        $line->{owners} = [@$owners];
+        ++$count;
+    }
+
+    return $count;
+}
+
+=method rename_project
+
+    $codeowners->rename_project($old_name => $new_name);
+
+Rename a project.
+
+Nothing happens if the file does not have a project with the old name.
+
+=cut
+
+sub rename_project {
+    my $self        = shift;
+    my $old_project = shift;
+    my $new_project = shift;
+    $old_project && $new_project or _usage(q{$codeowners->rename_project($project => $new_project)});
+
+    $self->_clear;
+
+    my $count = 0;
+
+    for my $line (@{$self->_lines}) {
+        next if !exists $line->{project} || $old_project ne $line->{project};
+        $line->{project} = $new_project;
+        $line->{comment} = " Project: $new_project" if exists $line->{comment};
+        ++$count;
+    }
+
+    return $count;
 }
 
 =method append
