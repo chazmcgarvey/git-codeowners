@@ -184,7 +184,7 @@ sub _command_update {
         my $template = <<'END';
  This file shows mappings between subdirs/files and the individuals and
  teams who own them. You can read this file yourself or use tools to query it,
- so you can quickly determine who to speak with or send pull requests to. ❤️
+ so you can quickly determine who to speak with or send pull requests to.
 
  Simply write a gitignore pattern followed by one or more names/emails/groups.
  Examples:
