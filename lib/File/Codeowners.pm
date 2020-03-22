@@ -449,6 +449,38 @@ sub update_owners_by_project {
     return $count;
 }
 
+=method rename_owner
+
+    $codeowners->rename_owner($old_name => $new_name);
+
+Rename an owner.
+
+Nothing happens if the file does not have an owner with the old name.
+
+=cut
+
+sub rename_owner {
+    my $self        = shift;
+    my $old_owner   = shift;
+    my $new_owner   = shift;
+    $old_owner && $new_owner or _usage(q{$codeowners->rename_owner($owner => $new_owner)});
+
+    $self->_clear;
+
+    my $count = 0;
+
+    for my $line (@{$self->_lines}) {
+        next if !exists $line->{owners};
+        for (my $i = 0; $i < @{$line->{owners}}; ++$i) {
+            next if $line->{owners}[$i] ne $old_owner;
+            $line->{owners}[$i] = $new_owner;
+            ++$count;
+        }
+    }
+
+    return $count;
+}
+
 =method rename_project
 
     $codeowners->rename_project($old_name => $new_name);
