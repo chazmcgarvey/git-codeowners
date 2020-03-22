@@ -31,7 +31,7 @@ sub finish {
     my %options;
     $options{pretty} = 1 if lc($self->format) eq 'pretty';
 
-    my $json = JSON::MaybeXS->new(canonical => 1, utf8 => 1, %options);
+    my $json = JSON::MaybeXS->new(canonical => 1, %options);
 
     my $columns = $self->columns;
     $results = [map { +{zip @$columns, @$_} } @$results];

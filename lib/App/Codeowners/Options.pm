@@ -5,6 +5,7 @@ use v5.10.1;
 use warnings;
 use strict;
 
+use Encode qw(decode);
 use Getopt::Long 2.39 ();
 use Path::Tiny;
 
@@ -81,6 +82,9 @@ sub options {
 sub new {
     my $class = shift;
     my @args  = @_;
+
+    # assume UTF-8 args if non-ASCII
+    @args = map { decode('UTF-8', $_) } @args if grep { /\P{ASCII}/ } @args;
 
     my $self = bless {}, $class;
 

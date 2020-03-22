@@ -15,7 +15,6 @@ our $VERSION = '9999.999'; # VERSION
 use parent 'App::Codeowners::Formatter';
 
 use App::Codeowners::Util qw(stringify);
-use Encode qw(encode);
 
 sub finish {
     my $self    = shift;
@@ -28,7 +27,7 @@ sub finish {
         rows        => [$self->columns, map { [map { stringify($_) } @$_] } @$results],
         backend     => $ENV{PERL_TEXT_TABLE},
     );
-    print { $self->handle } encode('UTF-8', $table);
+    print { $self->handle } $table;
 }
 
 1;

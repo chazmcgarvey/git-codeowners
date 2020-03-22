@@ -10,7 +10,6 @@ use App::Codeowners::Formatter;
 use App::Codeowners::Options;
 use App::Codeowners::Util qw(find_codeowners_in_directory run_git git_ls_files git_toplevel);
 use Color::ANSI::Util 0.03 qw(ansifg);
-use Encode qw(encode);
 use File::Codeowners;
 use Path::Tiny;
 
@@ -36,6 +35,8 @@ sub main {
     my $command = $opts->command;
     my $handler = $self->can("_command_$command")
         or die "Unknown command: $command\n";
+
+    binmode(STDOUT, ':encoding(UTF-8)');
     $self->$handler($opts);
 
     exit 0;

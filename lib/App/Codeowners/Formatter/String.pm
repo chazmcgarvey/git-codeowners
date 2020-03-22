@@ -18,7 +18,6 @@ use parent 'App::Codeowners::Formatter';
 
 use App::Codeowners::Util qw(stringf zip);
 use Color::ANSI::Util 0.03 qw(ansifg);
-use Encode qw(encode);
 
 sub stream {
     my $self    = shift;
@@ -34,7 +33,7 @@ sub stream {
     );
 
     my $text = stringf($self->format, %info);
-    print { $self->handle } encode('UTF-8', $text), "\n";
+    print { $self->handle } $text, "\n";
 }
 
 sub _expand_filter_args {

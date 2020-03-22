@@ -192,7 +192,7 @@ sub write_to_filepath {
     my $self = shift;
     my $path = shift or _usage(q{$codeowners->write_to_filepath($filepath)});
 
-    path($path)->spew_utf8([map { "$_\n" } @{$self->write_to_array('')}]);
+    path($path)->spew_utf8([map { "$_\n" } @{$self->write_to_array}]);
 }
 
 =method write_to_fh
@@ -204,10 +204,11 @@ Format the file contents and write to a filehandle.
 =cut
 
 sub write_to_fh {
-    my $self = shift;
-    my $fh   = shift or _usage(q{$codeowners->write_to_fh($fh)});
+    my $self    = shift;
+    my $fh      = shift or _usage(q{$codeowners->write_to_fh($fh)});
+    my $charset = shift;
 
-    for my $line (@{$self->write_to_array}) {
+    for my $line (@{$self->write_to_array($charset)}) {
         print $fh "$line\n";
     }
 }
@@ -221,9 +222,10 @@ Format the file contents and return a reference to a formatted string.
 =cut
 
 sub write_to_string {
-    my $self = shift;
+    my $self    = shift;
+    my $charset = shift;
 
-    my $str = join("\n", @{$self->write_to_array}) . "\n";
+    my $str = join("\n", @{$self->write_to_array($charset)}) . "\n";
     return \$str;
 }
 
@@ -237,7 +239,7 @@ Format the file contents as an arrayref of lines.
 
 sub write_to_array {
     my $self    = shift;
-    my $charset = shift // 'UTF-8';
+    my $charset = shift;
 
     my @format;
 
@@ -263,7 +265,7 @@ sub write_to_array {
         }
     }
 
-    if ($charset) {
+    if (defined $charset) {
         $_ = encode($charset, $_) for @format;
     }
     return \@format;

@@ -15,7 +15,6 @@ our $VERSION = '9999.999'; # VERSION
 use parent 'App::Codeowners::Formatter';
 
 use App::Codeowners::Util qw(stringify);
-use Encode qw(encode);
 
 sub start {
     my $self = shift;
@@ -27,7 +26,7 @@ sub stream {
     my $self    = shift;
     my $result  = shift;
 
-    $self->text_csv->print($self->handle, [map { encode('UTF-8', stringify($_)) } @$result]);
+    $self->text_csv->print($self->handle, [map { stringify($_) } @$result]);
 }
 
 =attr text_csv
