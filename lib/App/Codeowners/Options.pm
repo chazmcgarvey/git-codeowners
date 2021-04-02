@@ -11,7 +11,7 @@ use Path::Tiny;
 
 our $VERSION = '9999.999'; # VERSION
 
-sub pod2usage {
+sub _pod2usage {
     eval { require Pod::Usage };
     if ($@) {
         my $ref  = $VERSION eq '9999.999' ? 'master' : "v$VERSION";
@@ -32,7 +32,7 @@ END
     }
 }
 
-sub early_options {
+sub _early_options {
     return {
         'color|colour!'         => (-t STDOUT ? 1 : 0), ## no critic (InputOutput::ProhibitInteractiveTest)
         'format|f=s'            => undef,
@@ -43,7 +43,7 @@ sub early_options {
     };
 }
 
-sub command_options {
+sub _command_options {
     return {
         'create'    => {},
         'owners'    => {
@@ -64,20 +64,28 @@ sub command_options {
     };
 }
 
-sub commands {
+sub _commands {
     my $self = shift;
-    my @commands = sort keys %{$self->command_options};
+    my @commands = sort keys %{$self->_command_options};
     return @commands;
 }
 
-sub options {
+sub _options {
     my $self = shift;
     my @command_options;
     if (my $command = $self->{command}) {
-        @command_options = keys %{$self->command_options->{$command} || {}};
+        @command_options = keys %{$self->_command_options->{$command} || {}};
     }
-    return (keys %{$self->early_options}, @command_options);
+    return (keys %{$self->_early_options}, @command_options);
 }
+
+=method new
+
+    $options = App::Codeowners::Options->new(@ARGV);
+
+Construct a new object.
+
+=cut
 
 sub new {
     my $class = shift;
@@ -92,9 +100,9 @@ sub new {
 
     my $opts = $self->get_options(
         args    => \@args,
-        spec    => $self->early_options,
+        spec    => $self->_early_options,
         config  => 'pass_through',
-    ) or pod2usage(2);
+    ) or _pod2usage(2);
 
     if ($ENV{CODEOWNERS_COMPLETIONS}) {
         $self->{command} = $args[0] || '';
@@ -114,10 +122,10 @@ sub new {
         exit 0;
     }
     if ($opts->{help}) {
-        pod2usage(-exitval => 0, -verbose => 99, -sections => [qw(NAME SYNOPSIS OPTIONS COMMANDS)]);
+        _pod2usage(-exitval => 0, -verbose => 99, -sections => [qw(NAME SYNOPSIS OPTIONS COMMANDS)]);
     }
     if ($opts->{manual}) {
-        pod2usage(-exitval => 0, -verbose => 2);
+        _pod2usage(-exitval => 0, -verbose => 2);
     }
     if (defined $opts->{shell_completion}) {
         $self->shell_completion($opts->{shell_completion});
@@ -126,30 +134,46 @@ sub new {
 
     # figure out the command (or default to "show")
     my $command = shift @args;
-    my $command_options = $self->command_options->{$command || ''};
+    my $command_options = $self->_command_options->{$command || ''};
     if (!$command_options) {
         unshift @args, $command if defined $command;
         $command = 'show';
-        $command_options = $self->command_options->{$command};
+        $command_options = $self->_command_options->{$command};
     }
 
     my $more_opts = $self->get_options(
         args    => \@args,
         spec    => $command_options,
-    ) or pod2usage(2);
+    ) or _pod2usage(2);
 
     %$self = (%$opts, %$more_opts, command => $command, args => \@args);
     return $self;
 }
 
+=method command
+
+    $str = $options->command;
+
+Get the command specified by args provided when the object was created.
+
+=cut
+
 sub command {
     my $self = shift;
     my $command = $self->{command};
-    my @commands = sort keys %{$self->command_options};
+    my @commands = sort keys %{$self->_command_options};
     return if not grep { $_ eq $command } @commands;
     $command =~ s/[^a-z]/_/g;
     return $command;
 }
+
+=method args
+
+    $args = $options->args;
+
+Get the args provided when the object was created.
+
+=cut
 
 sub args {
     my $self = shift;
@@ -285,7 +309,7 @@ sub completions {
     }
     else {
         if (!$self->command) {
-            $reply = [$self->commands, @{$self->_completion_options([keys %{$self->early_options}])}];
+            $reply = [$self->_commands, @{$self->_completion_options([keys %{$self->_early_options}])}];
         }
         else {
             print 'file';
@@ -300,7 +324,7 @@ sub completions {
 
 sub _completion_options {
     my $self = shift;
-    my $opts = shift || [$self->options];
+    my $opts = shift || [$self->_options];
 
     my @options;
 
