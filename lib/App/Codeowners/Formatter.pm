@@ -140,7 +140,7 @@ sub results { shift->{results} }
 
     $formatter->add_result($result);
 
-Provide an additional lint result to be formatted.
+Provide an additional result to be formatted.
 
 =cut
 

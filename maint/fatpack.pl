@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-    maint/fatpack.pl - Generate a fatpack version of git-codeowners
+maint/fatpack.pl - Generate a fatpack version of git-codeowners
 
 =head1 SYNOPSIS
 

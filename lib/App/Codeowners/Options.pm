@@ -54,11 +54,12 @@ sub _command_options {
         },
         'projects'  => {},
         'show'      => {
-            'owner=s@'      => [],
-            'pattern=s@'    => [],
-            'project=s@'    => [],
-            'patterns!'     => 0,
-            'projects!'     => undef,
+            'owner=s@'          => [],
+            'pattern=s@'        => [],
+            'project=s@'        => [],
+            'patterns!'         => 0,
+            'projects!'         => undef,
+            'expand-aliases!'   => 0,
         },
         'update'    => {},
     };
