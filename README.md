@@ -4,7 +4,7 @@ git-codeowners - A tool for managing CODEOWNERS files
 
 # VERSION
 
-version 0.50
+version 0.51
 
 # SYNOPSIS
 
@@ -102,6 +102,7 @@ Does not yet support Zsh...
     git-codeowners [show] [--format FORMAT] [--owner OWNER]...
                    [--pattern PATTERN]... [--[no-]patterns]
                    [--project PROJECT]... [--[no-]projects] [PATH...]
+                   [--[no-]expand-aliases]
 
 Show owners of one or more files in a repo.
 
@@ -113,6 +114,9 @@ Use `--patterns` to also show the matching pattern associated with each file.
 By default the output might show associated projects if the `CODEOWNERS` file
 defines them. You can control this by explicitly using `--projects` or
 `--no-projects` to always show or always hide defined projects, respectively.
+
+Use `--expand-aliases` to show owners that are group aliases defined in the
+`CODEOWNERS` file as their aliased owners.
 
 ## owners
 
@@ -185,6 +189,11 @@ bugs. The default module is [Text::Table::Tiny](https://metacpan.org/pod/Text%3A
     PERL_TEXT_TABLE=Text::Table::HTML git-codeowners -f table
 
 The list of available modules is at ["@BACKENDS" in Text::Table::Any](https://metacpan.org/pod/Text%3A%3ATable%3A%3AAny#BACKENDS).
+
+# ENVIRONMENT
+
+If you set `GIT_CODEOWNERS_ALIASES` in the environment to a true value, the parser will parse group
+aliases which are supported by some applications.
 
 # CAVEATS
 
